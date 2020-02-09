@@ -1,5 +1,5 @@
 """"
-   Implement a binary search tree.
+   Implement a binary search trees.
         Insertion : O(logn)     Worst Case: O(n)
         Deletion: O(logn)       Worst Case: O(n)
         Search:   O(logn)       Worst Case: O(n)
@@ -71,7 +71,7 @@ tree.insert(10,tree.root)
 tree.insert(4,tree.root)
 tree.insert(40,tree.root)
 
-# tree.inorder_traversal(tree.root)
+# trees.inorder_traversal(trees.root)
 
 tree.desc_traversal(tree.root)
 
