@@ -20,6 +20,18 @@ class BinarySearchTree():
     def __init__(self,root=None):
         self.root = root
 
+    def lowest_common_ancestor(self,root,a,b):
+        if root is None:
+            return None
+        if root.data == a or root.data == b:
+            return root
+        left = self.lowest_common_ancestor(root.left,a,b)
+        right = self.lowest_common_ancestor(root.right, a ,b)
+        if left and right:
+            return root
+
+        return(left if left is not None else right)
+
     def insert(self,data,root):
         node = TreeNode(data)
         current = root
@@ -106,23 +118,44 @@ class BinarySearchTree():
             return(self._isBST(root,min,max))
 
 
+if __name__ == '__main__':
+
+    tree = BinarySearchTree()
+    # tree.insert(9, tree.root)
+    # tree.insert(5, tree.root)
+    # tree.insert(6, tree.root)
+    # tree.insert(15, tree.root)
+    # tree.insert(10, tree.root)
+    # tree.insert(4, tree.root)
+    # tree.insert(40, tree.root)
+    #
+    # tree.inorder_traversal(tree.root)
+    # print("/n")
+    # tree.desc_traversal(tree.root)
+    # print("/n")
+    # print(tree.search(15, tree.root))
+    # print(tree.isBST(tree.root))
+    #
+
+    tree.insert(10, tree.root)
+    tree.insert(5, tree.root)
+    tree.insert( 20,tree.root)
+    tree.insert(2, tree.root)
+    tree.insert(6, tree.root)
+    tree.insert(1, tree.root)
+    tree.insert(4, tree.root)
+    tree.insert(7, tree.root)
+    tree.insert(21, tree.root)
+    tree.insert(15, tree.root)
 
 
-tree = BinarySearchTree()
-tree.insert(9,tree.root)
-tree.insert(5,tree.root)
-tree.insert(6,tree.root)
-tree.insert(15,tree.root)
-tree.insert(10,tree.root)
-tree.insert(4,tree.root)
-tree.insert(40,tree.root)
+    tree.inorder_traversal(tree.root)
+    print("/n")
+    print(tree.root.data)
 
-tree.inorder_traversal(tree.root)
-print("/n")
-tree.desc_traversal(tree.root)
-print("/n")
-print(tree.search(15,tree.root))
-print(tree.isBST(tree.root))
+
+    print(f"the LCA of (1,7) is {tree.lowest_common_ancestor(tree.root,1,7).data}")
+
 
 
 
