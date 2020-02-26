@@ -8,6 +8,11 @@ class BinaryTree():
     def __init__(self,root = None):
         self.root = root
 
+    def print(self,a,b,c):
+        print("hello")
+
+
+
 
     def insert(self,data):
         node  = Node(data)
@@ -53,7 +58,10 @@ tree = BinaryTree()
 tree.insert(10)
 tree.insert(20)
 tree.insert(30)
+tree.insert()
 
+tree.insert()
+tree.print(s)
 
 print(f"the preorder traversal is {tree.preorder(tree.root)}")
 print(f"the inorder traversal is {tree.inorder(tree.root)}")
