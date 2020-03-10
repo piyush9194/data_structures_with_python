@@ -19,8 +19,6 @@ class BinarySearchTree():
             print(root.data)
             self.inorder_traversal(root.right)
 
-
-
     def insert(self,root,data):
 
         node = Node(data)
@@ -40,8 +38,6 @@ class BinarySearchTree():
                     print(f"inserting to the right: {node.data}")
                     root.right = node
 
-
-
     def _isBST(self,root,min,max):
 
         if root is None:
@@ -51,26 +47,11 @@ class BinarySearchTree():
         else:
             return (self._isBST(root.left,min,root.data) and self._isBST(root.right,root.data,max))
 
-
     def isBST(self):
         if self.root is None:
             return True
         else:
             return(self._isBST(self.root,min=-10000,max=100000))
-
-    def topView(self,root):
-        # Write your code here
-        current = root
-        output = ""
-        while current is not None:
-            output = str(current.data)+ " " + output
-            current = current.left
-        sys.stdout.write(str(output))
-        current = root
-        while current is not None:
-            if current != root:
-                sys.stdout.write(str(current.data) + ' ')
-            current = current.right
 
     def level_order_traversal(self):
         queue = []
@@ -85,6 +66,7 @@ class BinarySearchTree():
                     queue.append(visited.left)
                 if visited.right:
                     queue.append(visited.right)
+
                 queue = queue[1:]
                 count-=1
             print("\n")
@@ -139,20 +121,67 @@ class BinarySearchTree():
         for k,v in map.items():
             print(v[0],end= ' ')
 
+    def spiral_order_traversal(self):
+        current = self.root
+        queue_1 = []
+        queue_2 = []
+        queue_1.append(current)
+        while queue_1 or queue_2:
+            while queue_1:
+                visited = queue_1[-1]
+                if visited.left:
+                    queue_2.append(visited.left)
+                if visited.right:
+                    queue_2.append(visited.right)
+                print(visited.data, end=' ')
+                queue_1.pop()
 
 
+            while queue_2:
+                visited = queue_2[-1]
+                if visited.left:
+                    queue_1.append(visited.right)
+                if visited.right:
+                    queue_1.append(visited.left)
+                print(visited.data, end=' ')
+                queue_2.pop()
 
-
+    def print_and_count_leaf_nodes(self,root):
+        current = root
+        if current is None:
+            return 0
+        if current.left is None and current.right is None:
+            print(current.data, end = ' ')
+            return 1
+        else:
+            return self.count_leaf_nodes(current.left) + self.count_leaf_nodes(current.right)
 
     def lowest_common_ancestor(self,root,n1,n2):
-        if self.root == n1 or self.root == n2:
-            return(self.root)
-        left = root.left
-        right = root.right
+        current = root
+        if current is None:
+            return None
+
+        if current.data == n1 or current.data == n2:
+            return current
+
+        left = self.lowest_common_ancestor(current.left,n1,n2)
+        right = self.lowest_common_ancestor(current.right,n1,n2)
+
+        if left is None and right is None:
+            return None
+        if left is not None and right is not None:
+            return current
+
+        return left if left else right
 
 
-
-
+    def mirror_image_of_tree(self,root):
+        """Swap every node left and right child in postorder traversal"""
+        current = root
+        if current:
+            self.mirror_image_of_tree(current.left)
+            self.mirror_image_of_tree(current.right)
+            current.left, current.right = current.right, current.left
 
 
 
@@ -176,9 +205,20 @@ tree.insert(tree.root,25)
 
 # tree.topView(tree.root)
 
-# tree.level_order_traversal()
+tree.level_order_traversal()
+# #
+# #
+# # tree.vertical_order_traversal()
+#
+# tree.top_view_of_tree()
+
+# tree.spiral_order_traversal()
+
+# print("\n" + str(tree.count_leaf_nodes(tree.root)))
 
 
-tree.vertical_order_traversal()
+# print(tree.lowest_common_ancestor(tree.root, 5,15).data)
 
-tree.top_view_of_tree()
+tree.mirror_image_of_tree(tree.root)
+
+tree.level_order_traversal()
