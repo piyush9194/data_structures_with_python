@@ -13,6 +13,15 @@ class BinarySearchTree():
     def __init__(self):
         self.root  = None
 
+    def height_of_tree(self,root):
+        current = root
+        if current is None:
+            return -1
+        else:
+            return 1 + max(self.height_of_tree(current.left), self.height_of_tree(current.right))
+
+        
+        
     def inorder_traversal(self,root):
         if root:
             self.inorder_traversal(root.left)
@@ -91,8 +100,13 @@ class BinarySearchTree():
             if visited.right:
                 queue.append([visited.right, order + 1])
             queue = queue[1:]
-        map = dict(sorted(map.items()))
+        map = OrderedDict(sorted(map.items()))
         print(map)
+        list_a = []
+        for k,v in map.items():
+            list_a.append(v)
+
+        print(list_a)
 
     def top_view_of_tree(self):
         if self.root is None:
@@ -184,6 +198,99 @@ class BinarySearchTree():
             current.left, current.right = current.right, current.left
 
 
+    def right_view_of_tree(self):
+        current = self.root
+        queue = []
+        queue.append(current)
+        while queue:
+            count = len(queue)
+            while count>0:
+                visited = queue[0]
+                temp = visited.data
+                if visited.left:
+                    queue.append(visited.left)
+                if visited.right:
+                    queue.append(visited.right)
+
+                queue = queue[1:]
+                count = count -1
+            print(temp,end = ' ')
+
+    def left_view_of_tree(self):
+        current = self.root
+        queue = []
+        queue.append(current)
+        while queue:
+            count=count2 = len(queue)
+
+            while count>0:
+                visited = queue[0]
+                if count2 == len(queue) :
+                    temp = visited.data
+                if visited.left:
+                    queue.append(visited.left)
+                if visited.right:
+                    queue.append(visited.right)
+
+                queue = queue[1:]
+                count = count -1
+            print(temp,end = ' ')
+
+    def diagonal_view_of_tree(self):
+
+        current = self.root
+        if current is None:
+            return
+        queue = [ ]
+        map = OrderedDict()
+        order = 0
+        queue.append([current,order])
+
+        while queue:
+            visited = queue[0][0]
+            order = queue[0][1]
+            if order not in map.keys():
+                map[order] = [visited.data]
+            else:
+                map[order].append(visited.data)
+            if visited.left:
+                queue.append([visited.left, order-1])
+            if visited.right:
+                queue.append([visited.right, order])
+            queue = queue[1:]
+
+        print(map)
+        for k,v in map.items():
+            print(v,sum(v))
+
+
+    def bottom_view_of_binary_tree(self):
+        current = self.root
+        if current is None:
+            return None
+        queue = []
+        map = OrderedDict()
+        order = 0
+        queue.append([current,order])
+        while queue:
+            visited = queue[0][0]
+            order = queue[0][1]
+            if order not in map.keys():
+                map[order] = [visited.data]
+            else:
+                map[order].append(visited.data)
+            if visited.left:
+                queue.append([visited.left, order -1])
+            if visited.right:
+                queue.append([visited.right, order +1])
+            queue = queue[1:]
+
+        map = dict(sorted(map.items()))
+        for k, v in map.items():
+            print(v[-1], end=' ')
+
+
+
 
 tree = BinarySearchTree()
 tree.insert(tree.root, 10)
@@ -196,6 +303,7 @@ tree.insert(tree.root,15)
 tree.insert(tree.root,22)
 tree.insert(tree.root,21)
 tree.insert(tree.root,25)
+tree.insert(tree.root,50)
 
 
 # tree.inorder_traversal(tree.root)
@@ -205,10 +313,10 @@ tree.insert(tree.root,25)
 
 # tree.topView(tree.root)
 
-tree.level_order_traversal()
+# tree.level_order_traversal()
 # #
 # #
-# # tree.vertical_order_traversal()
+# tree.vertical_order_traversal()
 #
 # tree.top_view_of_tree()
 
@@ -219,6 +327,19 @@ tree.level_order_traversal()
 
 # print(tree.lowest_common_ancestor(tree.root, 5,15).data)
 
-tree.mirror_image_of_tree(tree.root)
+# tree.mirror_image_of_tree(tree.root)
 
-tree.level_order_traversal()
+# tree.level_order_traversal()
+
+
+# print("Right view of tree")
+# tree.right_view_of_tree()
+# print("\n")
+# print("Left view of tree")
+# tree.left_view_of_tree()
+
+# tree.diagonal_view_of_tree()
+
+# tree.bottom_view_of_binary_tree()
+
+print(tree.height_of_tree(tree.root))
