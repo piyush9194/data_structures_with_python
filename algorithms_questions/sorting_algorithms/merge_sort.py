@@ -33,6 +33,4 @@ def merge_sort(arr):
         return merge(merge_sort(left),merge_sort(right))
 
 
-
-
 print(merge_sort([8,5,1,3,2]))
