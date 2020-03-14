@@ -13,15 +13,114 @@ class BinarySearchTree():
     def __init__(self):
         self.root  = None
 
+    def boundary_traversal_of_binary_tree(self):
+        self.result = []
+        leaf = []
+        def leaf_nodes(root):
+            if root:
+                leaf_nodes(root.left)
+                if root.left is None and root.right is None:
+                    leaf.append(root)
+                leaf_nodes(root.right)
+            return leaf
+
+        queue = []
+        current = self.root
+        queue.append(current)
+        left_view = []
+        right_view = []
+        while queue:
+            count1=count2 = len(queue)
+            while count1>0:
+                visited = queue[0]
+                if count2 == count1:
+                    left= visited
+                right = visited
+                count1 = count1 -1
+                queue = queue[1:]
+                if visited.left:
+                    queue.append(visited.left)
+                if visited.right:
+                    queue.append(visited.right)
+
+            left_view.append(left)
+            right_view.append(right)
+
+        if self.root.right is None:
+            right_view = [self.root]
+        else:
+            right_view.reverse()
+
+        if self.root.left is None:
+            left_view = [self.root]
+
+        leaves = leaf_nodes(self.root)
+
+        for items in leaf:
+            if items in left_view:
+                left_view.remove(items)
+            if items in right_view:
+                right_view.remove(items)
+        boundary = left_view + leaves+right_view[:-1]
+        for nodes in boundary:
+            print(nodes.data, end = " ")
+
+
+
+    def diameter_of_binary_tree(self,root):
+        self.diameter = 0
+        def height(root):
+            if not root:
+                return 0
+            left = height(root.left)
+            right = height(root.right)
+
+            c_diameter = left + right
+            self.diameter = max(self.diameter, c_diameter)
+
+            return max(left, right) + 1
+
+        height(root)
+        return self.diameter
+
+
+
     def height_of_tree(self,root):
         current = root
         if current is None:
             return -1
         else:
             return 1 + max(self.height_of_tree(current.left), self.height_of_tree(current.right))
+        
+    def number_of_nodes(self,root):
+        
+        if root is None:
+            return 0
+        else:
+            return 1 + self.number_of_nodes(root.left) + self.number_of_nodes(root.right)
 
-        
-        
+    def number_of_leaf_nodes(self,root):
+        if root is None:
+            return 0
+
+        if root.left is None and root.right is None:
+            return 1
+        return self.number_of_leaf_nodes(root.left) + self.number_of_leaf_nodes(root.right)
+
+
+    def number_of_full_nodes(self,root,list_a=[]):
+        if root is None:
+            return 0
+        else:
+            self.number_of_full_nodes(root.left,list_a )
+            if root.left is not None and root.right is not None:
+                list_a.append(root.data)
+                print(root.data,list_a)
+            self.number_of_full_nodes(root.right,list_a)
+
+        return len(list_a)
+
+
     def inorder_traversal(self,root):
         if root:
             self.inorder_traversal(root.left)
@@ -342,4 +441,18 @@ tree.insert(tree.root,50)
 
 # tree.bottom_view_of_binary_tree()
 
-print(tree.height_of_tree(tree.root))
+# print(tree.height_of_tree(tree.root))
+
+
+# print("The number of nodes in the tree: ")
+
+# print(tree.number_of_nodes(tree.root))
+
+# print(tree.number_of_leaf_nodes(tree.root))
+
+# print(tree.number_of_full_nodes(tree.root))
+
+
+# print(tree.diameter_of_binary_tree(tree.root))
+
+tree.boundary_traversal_of_binary_tree()
