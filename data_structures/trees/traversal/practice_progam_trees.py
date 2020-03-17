@@ -9,9 +9,129 @@ class Node():
         self.right = None
 
 
+
+
 class BinarySearchTree():
     def __init__(self):
         self.root  = None
+
+    def isSibling(self,root, a, b):
+        if root:
+            if root.left is not None and root.right is not None:
+                if root.left.data == a and root.right.data == b or root.left.data == b and root.right.data == a:
+                    return True
+            return self.isSibling(root.left, a, b) or self.isSibling(root.right, a, b)
+
+
+    def _isBST(self,root, min, max):
+        if root is None:
+            return True
+        if root.data <= min or root.data >= max:
+            return False
+        else:
+            return self._isBST(root.left, min, root.data) and self._isBST(root.right, root.data, max)
+
+    def check_binary_search_tree_(self,root):
+        if root is None:
+            return True
+        min = -10000
+        max = 10000
+        return self._isBST(root, min, max)
+
+
+    def root_to_leaf_path_and_sum(self,root, path=[], pathlength=0,final_result= {}):
+        if root is None:
+            return None
+
+        if len(path) > pathlength:
+            path[pathlength] = root.data
+        else:
+            path.append(root.data)
+
+        pathlength = pathlength + 1
+        if root.left is None and root.right is None:
+            count = pathlength
+            sum = 0
+            data = " "
+            for items in path:
+                if count > 0:
+                    # print(items, end=" ")
+                    data = data + str(items)+ "-->"
+                    sum = sum + items
+                count = count - 1
+            final_result[sum] = data
+
+        else:
+            self.root_to_leaf_path_and_sum(root.left, path, pathlength,final_result)
+            self.root_to_leaf_path_and_sum(root.right, path, pathlength,final_result)
+
+        result= max(final_result,key=int)
+        # print(final_result)
+
+        return final_result[result]
+
+
+
+    # def complete_binary_tree_check(self):
+    #     pass
+    #
+    # def root_to_leaf_path(self,root,result):
+    #     if root:
+    #         if root is None:
+    #             return False
+    #         if root.left is None and root.right is None:
+    #             print(result)
+    #
+    #         else:
+    #             self.root_to_leaf_path(root.left, result):
+    #             self.root_to_leaf_path(root.right, result):
+    #
+    #     # return result
+
+
+
+
+    def find_next_node_at_the_same_level(self,val=22):
+        queue = []
+        current = self.root
+        queue.append(current)
+        while queue:
+            count = len(queue)
+            while count:
+                visited = queue[0]
+                # print(visited.data,end = ' ')
+                if visited.left:
+                    queue.append(visited.left)
+                if visited.right:
+                    queue.append(visited.right)
+
+                if visited.data == val and count>1:
+                    return(queue[1].data)
+
+                queue= queue[1:]
+                count = count-1
+            # print("\n")
+
+
+    def isIdentical(self,root1,root2):
+        if root1 is None and root2 is None:
+            return True
+        if root1 is None or root2 is None:
+            return False
+        return root1.data == root2.data and self.isIdentical(root1.left,root2.left) \
+               and self.isIdentical(root1.right,root2.right)
+
+
+    def isBinaryTreeSubtree(self,root1,root2):
+        if root2 is None:
+            return True
+        if root1 is None:
+            return False
+
+        if self.isIdentical(root1,root2):
+            return True
+    
+        return self.isBinaryTreeSubtree(root1.left,root2) or self.isBinaryTreeSubtree(root1.right,root2)
 
     def boundary_traversal_of_binary_tree(self):
         self.result = []
@@ -405,6 +525,21 @@ tree.insert(tree.root,25)
 tree.insert(tree.root,50)
 
 
+
+tree2 = BinarySearchTree()
+# tree2.insert(tree2.root, 10)
+# tree2.insert(tree2.root,20)
+tree2.insert(tree2.root,8)
+
+tree2.insert(tree2.root,5)
+tree2.insert(tree2.root,9)
+# tree2.insert(tree2.root,15)
+# tree2.insert(tree2.root,22)
+# tree2.insert(tree2.root,21)
+# tree2.insert(tree2.root,25)
+# tree2.insert(tree2.root,51)
+
+
 # tree.inorder_traversal(tree.root)
 
 
@@ -455,4 +590,17 @@ tree.insert(tree.root,50)
 
 # print(tree.diameter_of_binary_tree(tree.root))
 
-tree.boundary_traversal_of_binary_tree()
+# tree.boundary_traversal_of_binary_tree()\
+
+
+
+# print(tree.isIdentical(tree.root,tree2.root))
+
+# print(tree.isBinaryTreeSubtree(tree.root, tree2.root))
+
+# print(tree.find_next_node_at_the_same_level())
+
+
+# print(tree.root_to_leaf_path_and_sum(tree.root))
+# print(tree2.check_binary_search_tree_(tree2.root))
+print(tree.isSibling(tree.root,5,15))
