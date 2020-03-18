@@ -5,14 +5,18 @@
 """
 
 
-
-def isBST(root,min, max):
+def isBST(root, min, max):
     if root is None:
         return True
-
-    if root.data < min or root.data > max:
+    if root.data <= min or root.data >= max:
         return False
     else:
-        return(isBST(root.left) and isBST(root.right))
+        return isBST(root.left, min, root.data) and isBST(root.right, root.data, max)
 
 
+def check_binary_search_tree_(root):
+    if root is None:
+        return True
+    min = -10000
+    max = 10000
+    return isBST(root, min, max)
