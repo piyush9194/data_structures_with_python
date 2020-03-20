@@ -15,7 +15,40 @@ class BinarySearchTree():
     def __init__(self):
         self.root  = None
 
-    def find_level(self,val):
+    def convert_binary_tree_to_sum_tree(self,root):
+        if root is None:
+            return 0
+
+
+        temp = root.data
+
+        root.data= self.convert_binary_tree_to_sum_tree(root.left)+ self.convert_binary_tree_to_sum_tree(root.right)
+
+        return temp+root.data
+
+    def diagonalSum(self):
+        #:param root: root of the given tree.
+        # code here
+
+        current = self.root
+        queue = []
+        order = 0
+        map = OrderedDict()
+        queue.append([current, order])
+        while queue:
+            visited = queue[0][0]
+            order = queue[0][1]
+            if order not in map:
+                map[order] = [visited.data]
+            else:
+                map[order].append(visited.data)
+            if visited.left:
+                queue.append([visited.left, order - 1])
+            if visited.right:
+                queue.append([visited.right, order])
+            queue = queue[1:]
+        for k, v in map.items():
+            print(v, sum(v), end=" ")
 
 
 
@@ -55,25 +88,17 @@ class BinarySearchTree():
 
         pathlength = pathlength + 1
         if root.left is None and root.right is None:
-            count = pathlength
-            sum = 0
-            data = " "
-            for items in path:
-                if count > 0:
-                    # print(items, end=" ")
-                    data = data + str(items)+ "-->"
-                    sum = sum + items
-                count = count - 1
-            final_result[sum] = data
+            # print(path,sum(path))
+            final_result[sum(path)] = path
 
-        else:
-            self.root_to_leaf_path_and_sum(root.left, path, pathlength,final_result)
-            self.root_to_leaf_path_and_sum(root.right, path, pathlength,final_result)
+
+        self.root_to_leaf_path_and_sum(root.left, path, pathlength,final_result)
+        self.root_to_leaf_path_and_sum(root.right, path, pathlength,final_result)
 
         result= max(final_result,key=int)
-        # print(final_result)
+        # # print(final_result)
 
-        return final_result[result]
+        return result
 
 
 
@@ -96,25 +121,25 @@ class BinarySearchTree():
 
 
 
-    def find_next_node_at_the_same_level(self,val=22):
+    def find_next_node_at_the_same_level(self,val=15):
         queue = []
         current = self.root
         queue.append(current)
+
         while queue:
+            prev = None
             count = len(queue)
-            while count:
+            while count>0:
                 visited = queue[0]
-                # print(visited.data,end = ' ')
+                if prev and prev == val:
+                    print(visited.data)
                 if visited.left:
                     queue.append(visited.left)
                 if visited.right:
                     queue.append(visited.right)
-
-                if visited.data == val and count>1:
-                    return(queue[1].data)
-
                 queue= queue[1:]
                 count = count-1
+                prev = visited.data
             # print("\n")
 
 
@@ -249,7 +274,7 @@ class BinarySearchTree():
     def inorder_traversal(self,root):
         if root:
             self.inorder_traversal(root.left)
-            print(root.data)
+            print(root.data,end=" ")
             self.inorder_traversal(root.right)
 
     def insert(self,root,data):
@@ -534,18 +559,18 @@ tree.insert(tree.root,50)
 tree2 = BinarySearchTree()
 # tree2.insert(tree2.root, 10)
 # tree2.insert(tree2.root,20)
-tree2.insert(tree2.root,8)
+tree2.insert(tree2.root,20)
 
-tree2.insert(tree2.root,5)
-tree2.insert(tree2.root,9)
-# tree2.insert(tree2.root,15)
-# tree2.insert(tree2.root,22)
+tree2.insert(tree2.root,10)
+tree2.insert(tree2.root,25)
+tree2.insert(tree2.root,22)
+tree2.insert(tree2.root,30)
 # tree2.insert(tree2.root,21)
 # tree2.insert(tree2.root,25)
 # tree2.insert(tree2.root,51)
 
 
-# tree.inorder_traversal(tree.root)
+tree.inorder_traversal(tree2.root)
 
 
 # print(tree.isBST())
@@ -608,4 +633,13 @@ tree2.insert(tree2.root,9)
 
 # print(tree.root_to_leaf_path_and_sum(tree.root))
 # print(tree2.check_binary_search_tree_(tree2.root))
-print(tree.isSibling(tree.root,5,15))
+# print(tree.isSibling(tree.root,5,15))
+
+# tree.diagonalSum()
+
+# tree.find_next_node_at_the_same_level()
+
+tree2.convert_binary_tree_to_sum_tree(tree2.root)
+
+print('\n')
+tree2.inorder_traversal(tree2.root)

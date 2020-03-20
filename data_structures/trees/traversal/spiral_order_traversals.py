@@ -27,3 +27,34 @@ def spiral_order_traversal(self):
                 stack_1.append(visited.left)
             print(visited.data, end=' ')
             stack_2.pop()
+
+
+""""Other method using the property of even and odd"""
+
+def printSpiral(root):
+    if root is None:
+        return
+    # Code here
+    current = root
+    queue= []
+    level = 0
+    queue.append(current)
+    while queue:
+        result = []
+        count = len(queue)
+        while count>0:
+            visited = queue[0]
+            result.append(visited.data)
+            if visited.left:
+                queue.append(visited.left)
+            if visited.right:
+                queue.append(visited.right)
+            queue=queue[1:]
+            count=count-1
+        if level %2 !=0:
+            for items in result:
+                print(items,end=" ")
+        else:
+            for items in reversed(result):
+                print(items,end = " ")
+        level = level+1
