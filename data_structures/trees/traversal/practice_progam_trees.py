@@ -15,6 +15,25 @@ class BinarySearchTree():
     def __init__(self):
         self.root  = None
 
+    def checkSumPath(self,root,path,pathlength,val):
+        if root is None:
+            return None
+
+        if len(path)> pathlength:
+            path[pathlength] = root.data
+        else:
+            path.append(root.data)
+
+        pathlength = pathlength +1
+        if root.left is None and root.right is None:
+
+            if sum(path) == val:
+                print(f"The path leading to sum: {val} is {path}")
+
+        self.checkSumPath(root.left,path,pathlength,val)
+        self.checkSumPath(root.right,path,pathlength,val)
+
+
     def convert_binary_tree_to_sum_tree(self,root):
         if root is None:
             return 0
@@ -61,13 +80,7 @@ class BinarySearchTree():
             return self.isSibling(root.left, a, b) or self.isSibling(root.right, a, b)
 
 
-    def _isBST(self,root, min, max):
-        if root is None:
-            return True
-        if root.data <= min or root.data >= max:
-            return False
-        else:
-            return self._isBST(root.left, min, root.data) and self._isBST(root.right, root.data, max)
+
 
     def check_binary_search_tree_(self,root):
         if root is None:
@@ -538,8 +551,46 @@ class BinarySearchTree():
         for k, v in map.items():
             print(v[-1], end=' ')
 
+    def isUnivalTree(self, root):
+        def check(root, val):
+            if root:
+
+                left = check(root.left, val)
+                right =check(root.right, val)
+
+                if left is False or right is False:
+                    return False
+                if left is True and right is True:
+                    return True
+                if root.data != val:
+                    return False
+                else:
+                    return True
+
+        if root is None:
+            return None
+        val = root.data
+        return check(root, val)
+
+    def findTilt(self, root):
+
+        result = 0
+
+        def total(root):
+            if root is None:
+                return 0
+            return root.data + total(root.left)+total(root.right)
 
 
+        if root is None:
+            return True
+
+        left = total(root.left)
+        right = total(root.right)
+
+        tilt = abs(right - left)
+        print(left, right, tilt)
+        return tilt
 
 tree = BinarySearchTree()
 tree.insert(tree.root, 10)
@@ -570,7 +621,7 @@ tree2.insert(tree2.root,30)
 # tree2.insert(tree2.root,51)
 
 
-tree.inorder_traversal(tree2.root)
+# tree.inorder_traversal(tree2.root)
 
 
 # print(tree.isBST())
@@ -639,7 +690,15 @@ tree.inorder_traversal(tree2.root)
 
 # tree.find_next_node_at_the_same_level()
 
-tree2.convert_binary_tree_to_sum_tree(tree2.root)
+# tree2.convert_binary_tree_to_sum_tree(tree2.root)
 
-print('\n')
+# print('\n')
+# tree2.inorder_traversal(tree2.root)
+
+
+# tree.checkSumPath(tree.root,[],0,45)
+
+
 tree2.inorder_traversal(tree2.root)
+print("\n")
+tree2.findTilt(tree2.root)

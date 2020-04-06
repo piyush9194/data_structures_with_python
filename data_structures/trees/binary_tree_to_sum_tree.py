@@ -8,7 +8,5 @@ def convert_binary_tree_to_sum_tree(self, root):
         return 0
 
     temp = root.data
-
     root.data = self.convert_binary_tree_to_sum_tree(root.left) + self.convert_binary_tree_to_sum_tree(root.right)
-
     return temp + root.data
