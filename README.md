@@ -11,3 +11,6 @@ Linkedin : https://www.linkedin.com/in/piyush-gupta-25357a5b/
 
 Good Reads:
 http://web.mit.edu/6.005/www/fa15/classes/10-recursion/
+
+Data Engineering Guide:
+https://docs.google.com/spreadsheets/d/1GOO4s1NcxCR8a44F0XnsErz5rYDxNbHAHznu4pJMRkw/edit#gid=0
